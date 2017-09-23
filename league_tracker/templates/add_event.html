@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<p> this exists? </p>
+
+<form action="/add_event/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value ="Submit" />
+</form> 
+{% endblock %}

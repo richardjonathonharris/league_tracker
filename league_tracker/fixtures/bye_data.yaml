@@ -1,0 +1,5 @@
+- model: league_tracker.user
+  user_id: 1
+  fields: 
+    name: BYE
+    is_bye: True

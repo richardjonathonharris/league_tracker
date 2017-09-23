@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<p> this exists? but for decks</p>
+
+<form action="/add_deck/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value ="Submit" />
+</form> 
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load extras %}
+{% block content %}
+
+<h3 class="text-center">Player Standings</h3>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Player Name</th>
+        <th class="text-center">Total Points</th>
+        <th class="text-center">Strength of Schedule</th>
+        <th class="text-center">Extended Strength of Schedule</th>
+    </tr>
+
+{% for key, value in stats.items|dictsortreversed:"1.sos"|dictsortreversed:"1.points" %}
+<tr>
+    <td><a href="/records/{{ key }}">{{ value.name }}</a></td> 
+    <td class="text-center">{{ value.points }}</td> 
+    <td class="text-center">{{ value.sos|floatformat:"2" }}</td> 
+    <td class="text-center">{{ value.esos|floatformat:"2" }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<h3 class="text-center">Match History</h3>
+
+<table class="table table-condensed">
+    <tr class="text-center">
+        <th>Player</th>
+        <th>Opponent</th>
+        <th class="text-center">As Runner</th>
+        <th class="text-center">As Corporation</th>
+        <th></th>
+        <th></th>
+    </tr>
+
+{% for record in records %}
+{% endfor %}
+
+{% regroup records|dictsortreversed:"game_id" by game as game_list %}
+{% for game in game_list %}
+<tr>
+    <td colspan="6" class="success text-center">{{ game.grouper }}</td>
+</tr>
+{% regroup game.list|dictsortreversed:"round_num" by round_num as round_list %}
+{% for round in round_list %}
+<tr>
+    <td colspan="6" class="info text-center">Round {{ round.grouper }}</td>
+</tr>
+{% for item in round.list %}
+<tr>
+    <td><a href="/records/{{ item.user_id_id }}">{{ item.user_id.name }}</a></td>
+    <td><a href="/records/{{ item.opponent_id_id }}">{{ item.opponent_id.name }}</a></td>
+    <td class="text-center">{{ item.get_runner_status_display }}</td>
+    <td class="text-center">{{ item.get_corp_status_display }}</td>
+    <td class="text-center"><a href="/update_record/{{ item.id }}/">Update</a></td>
+    <td class="text-center"><a href="/delete_record/{{ item.id }}/">Delete</a></td>
+</tr>
+{% endfor %}
+{% endfor %}
+{% endfor %}
+</table>
+
+{% endblock %}

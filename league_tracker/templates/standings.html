@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h4 class="text-center">{{ user.name }}</h4> 
+<p class="text-center"><i>Strength of Schedule: {{ sos|floatformat:"2" }}, Extended Strength of Schedule: {{ esos|floatformat:"2" }}</i></p>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Opponent</th>
+        <th class="text-center">Corporation</th>
+        <th class="text-center">Runner</th>
+        <th class="text-center">Game Night</th>
+        <th class="text-center">Round Number</th>
+    </tr>
+{% for rec in records %}
+<tr>
+    <td><a href="/records/{{ rec.opponent_id_id }}"> {{ rec.opponent_id}}</a></td>
+    <td class="text-center"> {{ rec.get_corp_status_display }}</td>
+    <td class="text-center"> {{ rec.get_runner_status_display }}</td>
+    <td class="text-center"> {{ rec.game }}</td>
+    <td class="text-center"> {{ rec.round_num }}</td>
+</tr>
+{% endfor %}
+
+<table class="table table-condensed">
+    <tr>
+        <th>Event</th>
+        <th class="text-center">Runner ID</th>
+        <th class="text-center">Corporation ID</th>
+    </tr>
+{% for d in deck %}
+    <tr>
+        <td>{{ d.game }}</td>
+        <td class="text-center">{{ d.runner_id }}</td>
+        <td class="text-center">{{ d.corp_id }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}

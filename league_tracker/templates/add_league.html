@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<p> this exists? but for leagues</p>
+
+<form action="/add_league/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value ="Submit" />
+</form> 
+{% endblock %}

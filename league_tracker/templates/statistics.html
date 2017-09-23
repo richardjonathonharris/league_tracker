@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3 class="text-center">Wins by Side</h3>
+
+<table class="table table-condensed">
+    <tr>
+        <th> </th>
+        <th>Runner</th>
+        <th>Corporation</th>
+    </tr>
+    <tr>
+        <td>Round Wins</td>
+        <td>{{ win_rates.WI.runner }}</td>
+        <td>{{ win_rates.WI.corp }}</td>
+    </tr>
+    <tr>
+        <td>Round Timed Wins</td>
+        <td>{{ win_rates.TW.runner }}</td>
+        <td>{{ win_rates.TW.corp }}</td>
+    </tr>
+    <tr>
+        <td>Round Ties</td>
+        <td>{{ win_rates.TI.runner }}</td>
+        <td>{{ win_rates.TI.corp }}</td>
+    </tr>
+</table>
+
+<h3 class="text-center">Points by Faction</h3>
+
+<table class="table table-condensed">
+    <tr>
+        <th>Faction</th>
+        <th>Points</th>
+    </tr>
+    {% for k, v in faction_records.items|dictsortreversed:1 %}
+    <tr>
+        <td>{{ k|title }}</td>
+        <td>{{ v }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3 class="text-center">Points by Identity</h3>
+
+<table class="table table-condensed">
+    <tr>
+        <th>ID</th>
+        <th>Points</th>
+    </tr>
+    {% for k, v in id_records.items|dictsortreversed:1 %}
+    <tr>
+        <td>{{ k|title }}</td>
+        <td>{{ v }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
