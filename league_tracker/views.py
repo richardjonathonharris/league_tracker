@@ -146,13 +146,19 @@ def faction_records(records, decks):
         game_deck = decks.filter(user_id=record.user_id_id, game=record.game_id).first()
         if game_deck is not None:
             if game_deck.corp_faction not in vals.keys():
-                vals[game_deck.corp_faction] = point_vals[record.corp_status]
+                vals[game_deck.corp_faction] = {}
+                vals[game_deck.corp_faction]['points'] = point_vals[record.corp_status]
+                vals[game_deck.corp_faction]['num_rounds'] = 1
             else:
-                vals[game_deck.corp_faction] += point_vals[record.corp_status]
+                vals[game_deck.corp_faction]['points'] += point_vals[record.corp_status]
+                vals[game_deck.corp_faction]['num_rounds'] += 1
             if game_deck.runner_faction not in vals.keys():
-                vals[game_deck.runner_faction] = point_vals[record.runner_status]
+                vals[game_deck.runner_faction] = {}
+                vals[game_deck.runner_faction]['points'] = point_vals[record.runner_status]
+                vals[game_deck.runner_faction]['num_rounds'] = 1
             else:
-                vals[game_deck.runner_faction] += point_vals[record.runner_status]
+                vals[game_deck.runner_faction]['points'] += point_vals[record.runner_status]
+                vals[game_deck.runner_faction]['num_rounds'] +=1
     return vals
 
 def id_records(records, decks):
@@ -161,13 +167,19 @@ def id_records(records, decks):
         game_deck = decks.filter(user_id=record.user_id_id, game=record.game_id).first()
         if game_deck is not None:
             if game_deck.corp_id not in vals.keys():
-                vals[game_deck.corp_id] = point_vals[record.corp_status]
+                vals[game_deck.corp_id] = {}
+                vals[game_deck.corp_id]['points'] = point_vals[record.corp_status]
+                vals[game_deck.corp_id]['num_rounds'] = 1
             else:
-                vals[game_deck.corp_id] += point_vals[record.corp_status]
+                vals[game_deck.corp_id]['points'] += point_vals[record.corp_status]
+                vals[game_deck.corp_id]['num_rounds'] += 1
             if game_deck.runner_id not in vals.keys():
-                vals[game_deck.runner_id] = point_vals[record.runner_status]
+                vals[game_deck.runner_id] = {}
+                vals[game_deck.runner_id]['points'] = point_vals[record.runner_status]
+                vals[game_deck.runner_id]['num_rounds'] = 1
             else:
-                vals[game_deck.runner_id] += point_vals[record.runner_status]
+                vals[game_deck.runner_id]['points'] += point_vals[record.runner_status]
+                vals[game_deck.runner_id]['num_rounds'] += 1
     return vals
 
 def all_records(request, game_night=None):
@@ -220,9 +232,17 @@ def statistics(request):
                     'runner': 0,
                     'corp': 0
                     }
+    ordered_id_rates = []
+    for key in sorted(id_recs, key=lambda x: (id_recs[x]['points']),reverse=True):
+        win_rate = (id_recs[key]['points'] / (id_recs[key]['num_rounds'] * 3)) *100
+        ordered_id_rates.append((key.title(), id_recs[key]['points'], id_recs[key]['num_rounds'], win_rate))
+    ordered_faction_rates = []
+    for key in sorted(faction_recs, key=lambda x: (faction_recs[x]['points']),reverse=True):
+        win_rate = (faction_recs[key]['points'] / (faction_recs[key]['num_rounds'] * 3)) *100
+        ordered_faction_rates.append((key.title(), faction_recs[key]['points'], faction_recs[key]['num_rounds'], win_rate))
     context = {
             'win_rates': win_rates,
-            'faction_records': faction_recs,
-            'id_records': id_recs,
+            'faction_records': ordered_faction_rates,
+            'id_records': ordered_id_rates,
             }
     return render(request, 'statistics.html', context)
