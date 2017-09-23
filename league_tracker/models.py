@@ -66,6 +66,11 @@ class StatsManager(models.Manager):
             return 0
         else:
             return sum(opp_sos)/len(opp_sos)
+
+    def total_games(self, user_id, event_id=None):
+        own_records = self.filter(user_id_id=user_id).count()
+        return own_records
+
     
     def total_points(self, user_id):
         own_records = self.filter(user_id_id=user_id)

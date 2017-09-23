@@ -22,8 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'w@rbv4$e^zl5o3ey-26za6q-@^8-rin%a_lqwu+tm3m#3d27__'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if 'RDS_DB_NAME' in os.environ:
+    DEBUG = False
+else:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 

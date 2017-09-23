@@ -7,7 +7,11 @@
 <table class="table table-condensed">
     <tr>
         <th>Player Name</th>
+        <th class="text-center">Total Number of Rounds Played</th>
         <th class="text-center">Total Points</th>
+        <th class="text-center">Point Percentage</th>
+        <th class="text-center">Runner Factions</th>
+        <th class="text-center">Corp Factions</th>
         <th class="text-center">Strength of Schedule</th>
         <th class="text-center">Extended Strength of Schedule</th>
     </tr>
@@ -15,7 +19,11 @@
 {% for key, value in stats.items|dictsortreversed:"1.sos"|dictsortreversed:"1.points" %}
 <tr>
     <td><a href="/records/{{ key }}">{{ value.name }}</a></td> 
-    <td class="text-center">{{ value.points }}</td> 
+    <td class="text-center">{{ value.total_games }}</td> 
+    <td class="text-center">{{ value.points }}</td>
+    <td class="text-center">{{ value.point_percentage|floatformat:"2" }}%</td>
+    <td class="text-center">{{ value.runner_factions }}</td>
+    <td class="text-center">{{ value.corp_factions }}</td>
     <td class="text-center">{{ value.sos|floatformat:"2" }}</td> 
     <td class="text-center">{{ value.esos|floatformat:"2" }}</td>
 </tr>

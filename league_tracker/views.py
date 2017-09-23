@@ -176,9 +176,19 @@ def all_records(request, game_night=None):
     all_players = [player for player in all_players if player!=1]
     stats = {}
     for player in all_players:
+        decks = Decks.objects.filter(user_id=player)
+        corp_factions = decks.distinct('corp_faction').values('corp_faction')
+        runner_factions = decks.distinct('runner_faction').values('runner_faction')
+        points = Records.stats.total_points(player)
+        total_possible = Records.stats.total_games(player) * 6 # because there's a max value of 6 points in each round
+        point_percentage = (points / total_possible ) * 100
         stats[player] = {
                 'name': User.objects.filter(user_id=player).values('name')[0]['name'],
-                'points': Records.stats.total_points(player),
+                'total_games': Records.stats.total_games(player),
+                'points': points,
+                'point_percentage': point_percentage,
+                'runner_factions': ', '.join([faction['runner_faction'].title() for faction in runner_factions]),
+                'corp_factions': ', '.join([faction['corp_faction'].title() for faction in corp_factions]),
                 'sos': Records.stats.sos(player),
                 'esos': Records.stats.esos(player),
                 }
