@@ -1,0 +1,18 @@
+branch-defaults:
+  master:
+    environment: netrunner-league-dev
+    group_suffix: null
+global:
+  application_name: netrunner_league
+  branch: null
+  default_ec2_keyname: dev
+  default_platform: Python 3.4
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: null
+  sc: git
+  workspace_type: Application
